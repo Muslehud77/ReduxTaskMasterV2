@@ -25,7 +25,20 @@ export const createUser = createAsyncThunk("userSlice/createUser",
 const userSlice = createSlice({
   name: 'userSlice',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser : (state, {payload})=>{
+     
+      state.name = payload.displayName;
+      state.email =payload.email;
+      
+    },
+    toggleLoading : (state, {payload})=>{
+        state.isLoading = payload.loading;
+       
+    },
+
+
+  },
   extraReducers : (builder)=>{
     builder.addCase(createUser.pending, (state)=>{
       state.isLoading = true
@@ -50,5 +63,7 @@ const userSlice = createSlice({
     })
   }
 });
+
+export const { setUser, toggleLoading } = userSlice.actions;
 
 export default userSlice.reducer;
