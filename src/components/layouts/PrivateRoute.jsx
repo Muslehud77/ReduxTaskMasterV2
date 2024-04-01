@@ -15,7 +15,7 @@ const PrivateRoute = ({ children }) => {
     onAuthStateChanged(auth, (user)=>{
       // console.log(user);
       if(user){
-        console.log(email);
+       
         dispatch(setUser({displayName : user.displayName,email:user.email}))
         dispatch(toggleLoading({loading : false}));
       }else{
@@ -24,8 +24,7 @@ const PrivateRoute = ({ children }) => {
     })
   },[])
  
-  console.log(pathname);
-  
+
   if (isLoading) {
     return <Loading />;
   }

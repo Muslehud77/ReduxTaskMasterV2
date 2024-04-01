@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
 import auth from '../../../utils/firebase.config';
+import toast from 'react-hot-toast';
 
 const initialState = {
   name: '',
@@ -44,27 +45,34 @@ async()=>{
 )
 
 const pending = (state)=>{
+  toast.dismiss();
   state.isLoading = true;
   state.isError = false;
   state.email = "";
   state.name = "";
   state.error = "";
+  toast.loading("Signing in...");
+ 
 }
 
 const fulfilled = (state,payload)=>{
+  toast.dismiss();
   state.isLoading = false;
   state.isError = false;
   state.email = payload.email;
   state.name = payload.name;
   state.error = "";
+   toast.success(`Welcome ${payload.name}`);
 }
 
 const rejected = (state,action)=>{
+  toast.dismiss();
   state.isLoading = false;
   state.isError = true;
   state.email = "";
   state.name = "";
   state.error = action.error.message;
+  toast.error(action.error.message);
 }
 
 
@@ -91,51 +99,26 @@ const userSlice = createSlice({
        state.error = "";
     }
 
-
   },
   extraReducers : (builder)=>{
     builder.addCase(createUser.pending, (state)=>{
-      state.isLoading = true
-      state.isError = false
-      state.email = ''
-      state.name = ''
-      state.error = ''
+       pending(state);
     })
     .addCase(createUser.fulfilled, (state,{payload})=>{
-      state.isLoading = false
-      state.isError = false
-      state.email = payload.email
-      state.name = payload.name
-      state.error = ''
+   fulfilled(state, payload);
     })
     .addCase(createUser.rejected, (state, action)=>{
-      state.isLoading = false
-      state.isError = true
-      state.email = ''
-      state.name = ''
-      state.error = action.error.message
+       rejected(state, action);
     })
 
     builder.addCase(userSignIn.pending, (state)=>{
-       state.isLoading = true;
-       state.isError = false;
-       state.email = "";
-       state.name = "";
-       state.error = "";
+       pending(state);
     })
     .addCase(userSignIn.fulfilled, (state,{payload})=>{
-        state.isLoading = false;
-        state.isError = false;
-        state.email = payload.email;
-        state.name = payload.name;
-        state.error = "";
+     fulfilled(state, payload);
     })
     .addCase(userSignIn.rejected,(state,action)=>{
-       state.isLoading = false;
-       state.isError = true;
-       state.email = "";
-       state.name = "";
-       state.error = action.error.message;
+      rejected(state, action);
     })
 
     builder.addCase(googleSignIn.pending,(state)=>{

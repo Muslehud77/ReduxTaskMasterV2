@@ -4,6 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser, googleSignIn } from '../redux/features/user/userSlice';
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const { handleSubmit, register, control } = useForm();
@@ -11,7 +12,9 @@ const Signup = () => {
   const confirmPassword = useWatch({ control, name: 'confirmPassword' });
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(true);
-  const { email,error } = useSelector((state) => state.userSlice);
+  const {name : userName, email, isError, error, isLoading } = useSelector(
+    (state) => state.userSlice
+  );
   const dispatch = useDispatch()
   const path = useLocation();
  
@@ -30,21 +33,40 @@ const Signup = () => {
       setDisabled(true);
     }
 
+  }, [password, confirmPassword]);
+
+  useEffect(() => { 
     if (email) {
-      navigate(path?.state?.path || '/');
+      navigate(path?.state?.path || "/");
     }
-  }, [password, confirmPassword, email, navigate, path]);
+  }, [email, navigate, path]);
+
+  // useEffect(() => {
+  //   let loadingToast 
+  //    if (userName) {
+  //      toast.dismiss();
+  //      toast.success(`Welcome ${userName}`);
+  //    }
+  //   if (isLoading) {
+  //     loadingToast = toast.loading("Signing up...");
+  //   }
+  //   if (isError) {
+  //     toast.dismiss(loadingToast);
+  //     toast.error(error);
+  //   }
+    
+  // }, [isLoading, isError, error,userName]);
 
   const onSubmit = ({ name, email, password }) => {
     // Email Password signup
-    dispatch(createUser({email,password,name}))
+    dispatch(createUser({ email, password, name }))
     
-    console.log(name, email, password);
 
   };
 
   const handleGoogleLogin = () => {
     // Google Login
+    toast.error('hello');
     dispatch(googleSignIn());
   };
 

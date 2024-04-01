@@ -23,7 +23,7 @@ const Login = () => {
   const onSubmit = ({ email, password }) => {
     // Email Password Login
     dispatch(userSignIn({email,password}))
-    console.log(email, password);
+   
   };
 
   const handleGoogleLogin = () => {
