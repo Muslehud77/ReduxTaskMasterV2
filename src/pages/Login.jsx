@@ -1,18 +1,33 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import loginImage from '../assets/image/login.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { googleSignIn, userSignIn } from '../redux/features/user/userSlice';
+import { useEffect } from 'react';
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+   const path = useLocation();
+  const {email} = useSelector(state=> state.userSlice)
+
+ 
+
+   useEffect(()=>{
+    if(email){
+      navigate(path.state?.path || '/')
+    }
+   },[email,navigate,path])
+
 
   const onSubmit = ({ email, password }) => {
     // Email Password Login
-
+    dispatch(userSignIn({email,password}))
     console.log(email, password);
   };
 
   const handleGoogleLogin = () => {
-    //  Google Login
+  dispatch(googleSignIn())
   };
 
   return (

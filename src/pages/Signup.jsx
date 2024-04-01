@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import loginImage from '../assets/image/login.svg';
 import { useForm, useWatch } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from '../redux/features/user/userSlice';
+import { createUser, googleSignIn } from '../redux/features/user/userSlice';
 
 const Signup = () => {
   const { handleSubmit, register, control } = useForm();
@@ -11,22 +11,29 @@ const Signup = () => {
   const confirmPassword = useWatch({ control, name: 'confirmPassword' });
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(true);
-  const { error } = useSelector((state) => state.userSlice);
+  const { email,error } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch()
+  const path = useLocation();
+ 
+
 
   useEffect(() => {
     if (
       password !== undefined &&
-      password !== '' &&
+      password !== "" &&
       confirmPassword !== undefined &&
-      confirmPassword !== '' &&
+      confirmPassword !== "" &&
       password === confirmPassword
     ) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [password, confirmPassword]);
+
+    if (email) {
+      navigate(path?.state?.path || '/');
+    }
+  }, [password, confirmPassword, email, navigate, path]);
 
   const onSubmit = ({ name, email, password }) => {
     // Email Password signup
@@ -38,6 +45,7 @@ const Signup = () => {
 
   const handleGoogleLogin = () => {
     // Google Login
+    dispatch(googleSignIn());
   };
 
   return (

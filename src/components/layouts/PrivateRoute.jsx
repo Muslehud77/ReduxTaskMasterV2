@@ -11,11 +11,11 @@ const PrivateRoute = ({ children }) => {
   const dispatch = useDispatch()
   // const isLoading = false;
   const { email, isLoading } = useSelector((state) => state.userSlice);
-
   useEffect(()=>{
     onAuthStateChanged(auth, (user)=>{
       // console.log(user);
       if(user){
+        console.log(email);
         dispatch(setUser({displayName : user.displayName,email:user.email}))
         dispatch(toggleLoading({loading : false}));
       }else{
@@ -23,14 +23,15 @@ const PrivateRoute = ({ children }) => {
       }
     })
   },[])
-
-
+ 
+  console.log(pathname);
+  
   if (isLoading) {
     return <Loading />;
   }
 
   if (!isLoading && !email) {
-    return <Navigate to="/login" state={{ path: pathname }} />;
+    return <Navigate to="/login" state={{ path: pathname}} />;
   }
 
   return children;
