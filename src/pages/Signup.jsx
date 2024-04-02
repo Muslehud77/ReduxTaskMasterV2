@@ -41,21 +41,7 @@ const Signup = () => {
     }
   }, [email, navigate, path]);
 
-  // useEffect(() => {
-  //   let loadingToast 
-  //    if (userName) {
-  //      toast.dismiss();
-  //      toast.success(`Welcome ${userName}`);
-  //    }
-  //   if (isLoading) {
-  //     loadingToast = toast.loading("Signing up...");
-  //   }
-  //   if (isError) {
-  //     toast.dismiss(loadingToast);
-  //     toast.error(error);
-  //   }
-    
-  // }, [isLoading, isError, error,userName]);
+  
 
   const onSubmit = ({ name, email, password }) => {
     // Email Password signup
