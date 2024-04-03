@@ -6,10 +6,19 @@ const baseApi = createApi({
   endpoints : (builder)=>({
     getTasks : builder.query({
         query : ()=> '/tasks'
+    }),
+    updateStatus : builder.mutation({
+      query : ({id,task}) => ({
+        url : `/tasks/${id}`,
+        method : "PATCH",
+        body : task,
+        
+      })
     })
-  })
+  }),
+
 });
 
-export const {useGetTasksQuery} = baseApi
+export const {useGetTasksQuery , useUpdateStatusMutation} = baseApi
 
 export default baseApi

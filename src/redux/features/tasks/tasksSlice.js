@@ -38,6 +38,7 @@ const tasksSlice = createSlice({
     updateStatus: (state, { payload }) => {
       const target = state.tasks.find((item) => item.id === payload.id);
       target.status = payload.status;
+      
     },
     userTasks: (state, { payload }) => {
       state.userSpecificTasks = state.tasks.filter(
