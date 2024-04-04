@@ -2,28 +2,25 @@ import { ArrowRightIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 import { useUpdateStatusMutation } from '../../redux/features/api/baseApi';
 
-const TaskCard = ({ task }) => {
-
-
-  const [updateTask , {data,error}] = useUpdateStatusMutation()
+const TaskCard = ({ task, refetch }) => {
+  const [updateTask, { data, error }] = useUpdateStatusMutation();
 
   // console.log(data);
   // console.log(error);
-  let updatedStatus ;
+  let updatedStatus;
 
-  if (task.status === 'pending') {
-    updatedStatus = 'running';
-
-  } else if (task.status === 'running') {
-    updatedStatus = 'done';
+  if (task.status === "pending") {
+    updatedStatus = "running";
+  } else if (task.status === "running") {
+    updatedStatus = "done";
   } else {
-    updatedStatus = 'archive';
+    updatedStatus = "archive";
   }
 
-  const update = (id)=>{
-    console.log(updatedStatus);
-    updateTask({ id, task : {status: updatedStatus} });
-  }
+  const update = (id) => {
+    updateTask({ id, status: { status: updatedStatus } });
+    refetch()
+  };
 
   return (
     <div className="bg-secondary/10 rounded-md p-5">
@@ -41,7 +38,7 @@ const TaskCard = ({ task }) => {
       <div className="flex justify-between mt-3">
         <p>{task?.date}</p>
         <div className="flex gap-3">
-          <button title="Delete">
+          <button onClick={refetch} title="Delete">
             <TrashIcon className="h-5 w-5 text-red-500" />
           </button>
           <button onClick={() => update(task._id)} title="Update Status">

@@ -8,17 +8,31 @@ const baseApi = createApi({
         query : ()=> '/tasks'
     }),
     updateStatus : builder.mutation({
-      query : ({id,task}) => ({
+      query : ({id,status}) => ({
         url : `/tasks/${id}`,
         method : "PATCH",
-        body : task,
+        body : status,
         
       })
+    }),
+    addTask : builder.mutation({
+      query : (task)=>({
+        url : '/tasks',
+        method : "POST",
+        body: task
+      })
+    }),
+    deleteTask : builder.mutation({
+      query : (id)=>({
+        url : `/tasks/${id}`,
+        method : "DELETE",
+      })
     })
+    
   }),
 
 });
 
-export const {useGetTasksQuery , useUpdateStatusMutation} = baseApi
+export const {useGetTasksQuery , useUpdateStatusMutation, useAddTaskMutation, useDeleteTaskMutation} = baseApi
 
 export default baseApi

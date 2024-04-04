@@ -11,7 +11,7 @@ const Tasks = () => {
   const [isOpen, setIsOpen] = useState(false);
   // const { tasks } = useSelector((state) => state.tasksSlice);
 
-  const {data : tasks,isLoading} = useGetTasksQuery()
+  const {data : tasks,isLoading,refetch} = useGetTasksQuery()
 // console.log(tasks);
   const pendingTasks = tasks?.filter((item) => item.status == 'pending');
   const runningTasks = tasks?.filter((item) => item.status == 'running');
@@ -61,7 +61,7 @@ const Tasks = () => {
               </div>
               <div className="space-y-3">
                 {pendingTasks?.map((item) => (
-                  <TaskCard key={item.id} task={item} />
+                  <TaskCard refetch={refetch} key={item.id} task={item} />
                 ))}
               </div>
             </div>
@@ -74,7 +74,7 @@ const Tasks = () => {
               </div>
               <div className="space-y-3">
                 {runningTasks?.map((item) => (
-                  <TaskCard key={item.id} task={item} />
+                  <TaskCard refetch={refetch} key={item.id} task={item} />
                 ))}
               </div>
             </div>
@@ -87,7 +87,7 @@ const Tasks = () => {
               </div>
               <div className="space-y-3">
                 {doneTasks?.map((item) => (
-                  <TaskCard key={item.id} task={item} />
+                  <TaskCard refetch={refetch} key={item.id} task={item} />
                 ))}
               </div>
             </div>
