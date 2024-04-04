@@ -12,7 +12,7 @@ const Tasks = () => {
   // const { tasks } = useSelector((state) => state.tasksSlice);
 
   const {data : tasks,isLoading,refetch} = useGetTasksQuery()
-// console.log(tasks);
+console.log(tasks);
   const pendingTasks = tasks?.filter((item) => item.status == 'pending');
   const runningTasks = tasks?.filter((item) => item.status == 'running');
   const doneTasks = tasks?.filter((item) => item.status == 'done');
