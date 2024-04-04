@@ -1,11 +1,13 @@
-import { useSelector } from 'react-redux';
+
 import Modal from '../ui/Modal';
+import { useGetSingleTaskQuery } from '../../redux/features/api/baseApi';
+import { useEffect } from 'react';
 
 const TaskDetailsModal = ({ isOpen, setIsOpen, taskId }) => {
-  const { tasks } = useSelector((state) => state.tasksSlice);
+  
+  
+  const { data: task } = useGetSingleTaskQuery(taskId,{});
 
-  const task = tasks.find((item) => item.id === taskId);
- 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen} title={task?.title}>
       {task?.description}

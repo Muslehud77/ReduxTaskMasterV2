@@ -7,20 +7,17 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TaskDetailsModal from './TaskDetailsModal';
 import { updateStatus, userTasks } from '../../redux/features/tasks/tasksSlice';
-import { useGetTasksQuery } from '../../redux/features/api/baseApi';
+import { useGetTasksQuery, useUpdateStatusMutation } from '../../redux/features/api/baseApi';
 
 const MyTasks = () => {
   // const { tasks, userSpecificTasks } = useSelector((state) => state.tasksSlice);
-  const {data:tasks}= useGetTasksQuery()
+  const {data:tasks,refetch}= useGetTasksQuery()
   const { name } = useSelector((state) => state.userSlice);
   const [isOpen, setIsOpen] = useState(false);
-  const [taskId, setTaskId] = useState(0);
+  const [taskId, setTaskId] = useState(null);
 
-  const dispatch = useDispatch();
+ const [update,{data,error}] = useUpdateStatusMutation()
 
-  useEffect(() => {
-    dispatch(userTasks(name));
-  }, [dispatch, name, tasks]);
 
   const userSpecificTasks = tasks?.filter(task=> task.assignedTo === name)
 
@@ -29,6 +26,12 @@ const MyTasks = () => {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    refetch();
+  }, [data, error]);
+
+
+
   return (
     <div>
       <TaskDetailsModal isOpen={isOpen} setIsOpen={setIsOpen} taskId={taskId} />
@@ -36,22 +39,20 @@ const MyTasks = () => {
       <div className=" h-[750px] overflow-auto space-y-3">
         {userSpecificTasks?.map((item) => (
           <div
-            key={item.id}
+            key={item._id}
             className="bg-secondary/10 rounded-md p-3 flex justify-between"
           >
             <h1>{item.title}</h1>
             <div className="flex gap-3">
               <button
-                onClick={() => handleDetails(item.id)}
+                onClick={() => handleDetails(item._id)}
                 className="grid place-content-center"
                 title="Details"
               >
                 <DocumentMagnifyingGlassIcon className="w-5 h-5 text-primary" />
               </button>
               <button
-                onClick={() =>
-                  dispatch(updateStatus({ id: item.id, status: 'done' }))
-                }
+                onClick={() => update({ id : item._id, status : {status: "done" }})}
                 className="grid place-content-center"
                 title="Done"
               >

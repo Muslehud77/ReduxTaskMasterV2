@@ -1,11 +1,12 @@
 import { ArrowRightIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-import { useDeleteTaskMutation, useUpdateStatusMutation } from '../../redux/features/api/baseApi';
+import { useDeleteTaskMutation, useGetTasksQuery, useUpdateStatusMutation } from '../../redux/features/api/baseApi';
 import { useEffect } from 'react';
 
 const TaskCard = ({ task, refetch }) => {
   const [updateTask, { data:updateData, error : updateErrorStatus }] = useUpdateStatusMutation();
   const [deleteTask, {data : deleteTaskData , error : deleteErrorData}] = useDeleteTaskMutation()
+  const {data} = useGetTasksQuery()
   // console.log(data);
   // console.log(error);
   let updatedStatus;
@@ -19,8 +20,10 @@ const TaskCard = ({ task, refetch }) => {
   }
 
   useEffect(() => {
-    refetch();
-  }, [deleteTask, updateTask]);
+    if (data.length) {
+      refetch();
+    }
+  }, [updateData, deleteTaskData]);
 
 
   return (

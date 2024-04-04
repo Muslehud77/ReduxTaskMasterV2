@@ -3,7 +3,7 @@ import MyTasks from '../components/tasks/MyTasks';
 import TaskCard from '../components/tasks/TaskCard';
 import AddTaskModal from '../components/tasks/AddTaskModal';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+
 import MenuDropdown from '../components/ui/MenuDropdown';
 import { useGetTasksQuery } from '../redux/features/api/baseApi';
 
@@ -11,8 +11,8 @@ const Tasks = () => {
   const [isOpen, setIsOpen] = useState(false);
   // const { tasks } = useSelector((state) => state.tasksSlice);
 
-  const {data : tasks,isLoading,refetch} = useGetTasksQuery()
-console.log(tasks);
+  const {data : tasks,refetch} = useGetTasksQuery()
+
   const pendingTasks = tasks?.filter((item) => item.status == 'pending');
   const runningTasks = tasks?.filter((item) => item.status == 'running');
   const doneTasks = tasks?.filter((item) => item.status == 'done');
@@ -61,7 +61,7 @@ console.log(tasks);
               </div>
               <div className="space-y-3">
                 {pendingTasks?.map((item) => (
-                  <TaskCard refetch={refetch} key={item.id} task={item} />
+                  <TaskCard refetch={refetch} key={item._id} task={item} />
                 ))}
               </div>
             </div>
@@ -74,7 +74,7 @@ console.log(tasks);
               </div>
               <div className="space-y-3">
                 {runningTasks?.map((item) => (
-                  <TaskCard refetch={refetch} key={item.id} task={item} />
+                  <TaskCard refetch={refetch} key={item._id} task={item} />
                 ))}
               </div>
             </div>
@@ -87,7 +87,7 @@ console.log(tasks);
               </div>
               <div className="space-y-3">
                 {doneTasks?.map((item) => (
-                  <TaskCard refetch={refetch} key={item.id} task={item} />
+                  <TaskCard refetch={refetch} key={item._id} task={item} />
                 ))}
               </div>
             </div>
