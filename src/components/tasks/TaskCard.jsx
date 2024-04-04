@@ -1,10 +1,11 @@
 import { ArrowRightIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-import { useUpdateStatusMutation } from '../../redux/features/api/baseApi';
+import { useDeleteTaskMutation, useUpdateStatusMutation } from '../../redux/features/api/baseApi';
+import { useEffect } from 'react';
 
 const TaskCard = ({ task, refetch }) => {
-  const [updateTask, { data, error }] = useUpdateStatusMutation();
-
+  const [updateTask, { data:updateData, error : updateErrorStatus }] = useUpdateStatusMutation();
+  const [deleteTask, {data : deleteTaskData , error : deleteErrorData}] = useDeleteTaskMutation()
   // console.log(data);
   // console.log(error);
   let updatedStatus;
@@ -17,10 +18,10 @@ const TaskCard = ({ task, refetch }) => {
     updatedStatus = "archive";
   }
 
-  const update = (id) => {
-    updateTask({ id, status: { status: updatedStatus } });
-    refetch()
-  };
+  useEffect(() => {
+    refetch();
+  }, [deleteTask, updateTask]);
+
 
   return (
     <div className="bg-secondary/10 rounded-md p-5">
@@ -38,10 +39,15 @@ const TaskCard = ({ task, refetch }) => {
       <div className="flex justify-between mt-3">
         <p>{task?.date}</p>
         <div className="flex gap-3">
-          <button onClick={refetch} title="Delete">
+          <button onClick={() => deleteTask(task._id)} title="Delete">
             <TrashIcon className="h-5 w-5 text-red-500" />
           </button>
-          <button onClick={() => update(task._id)} title="Update Status">
+          <button
+            onClick={() =>
+              updateTask({ id: task._id, status: { status: updatedStatus } })
+            }
+            title="Update Status"
+          >
             <ArrowRightIcon className="h-5 w-5 text-primary" />
           </button>
         </div>

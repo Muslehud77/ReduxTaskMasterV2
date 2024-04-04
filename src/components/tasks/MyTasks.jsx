@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TaskDetailsModal from './TaskDetailsModal';
 import { updateStatus, userTasks } from '../../redux/features/tasks/tasksSlice';
+import { useGetTasksQuery } from '../../redux/features/api/baseApi';
 
 const MyTasks = () => {
-  const { tasks, userSpecificTasks } = useSelector((state) => state.tasksSlice);
+  // const { tasks, userSpecificTasks } = useSelector((state) => state.tasksSlice);
+  const {data:tasks}= useGetTasksQuery()
   const { name } = useSelector((state) => state.userSlice);
   const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState(0);
@@ -19,6 +21,8 @@ const MyTasks = () => {
   useEffect(() => {
     dispatch(userTasks(name));
   }, [dispatch, name, tasks]);
+
+  const userSpecificTasks = tasks?.filter(task=> task.assignedTo === name)
 
   const handleDetails = (id) => {
     setTaskId(id);
