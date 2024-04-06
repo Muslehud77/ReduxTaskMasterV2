@@ -4,14 +4,14 @@ import {
 } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import TaskDetailsModal from './TaskDetailsModal';
-import { updateStatus, userTasks } from '../../redux/features/tasks/tasksSlice';
+
 import { useGetTasksQuery, useUpdateStatusMutation } from '../../redux/features/api/baseApi';
 
 const MyTasks = () => {
   // const { tasks, userSpecificTasks } = useSelector((state) => state.tasksSlice);
-  const {data:tasks,refetch}= useGetTasksQuery()
+  const {data:tasks}= useGetTasksQuery()
   const { name } = useSelector((state) => state.userSlice);
   const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState(null);
@@ -26,9 +26,6 @@ const MyTasks = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    refetch();
-  }, [data, error]);
 
 
 

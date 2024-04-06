@@ -1,14 +1,14 @@
 import { useForm } from 'react-hook-form';
 import Modal from '../ui/Modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { useAddTaskMutation, useGetTasksQuery } from '../../redux/features/api/baseApi';
+import { useAddTaskMutation } from '../../redux/features/api/baseApi';
 
 const AddTaskModal = ({ isOpen, setIsOpen }) => {
   const { register, handleSubmit, reset } = useForm();
   const {name} = useSelector(state=> state.userSlice)
   const [addTask, {data,error}] = useAddTaskMutation()
-  const {refetch} = useGetTasksQuery()
+
   const onCancel = () => {
     reset();
     setIsOpen(false);
@@ -17,7 +17,7 @@ const AddTaskModal = ({ isOpen, setIsOpen }) => {
   const onSubmit = (data) => {
     addTask({status : 'pending', ...data})
     onCancel();
-    refetch()
+  
   };
 
   return (
