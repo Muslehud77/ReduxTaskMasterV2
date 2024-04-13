@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 
 import {  useSelector } from 'react-redux';
 import TaskDetailsModal from './TaskDetailsModal';
+import { useGetTasksQuery, useUpdateStatusMutation } from '../../redux/features/tasks/tasksApi';
 
-import { useGetTasksQuery, useUpdateStatusMutation } from '../../redux/features/api/baseApi';
+
 
 const MyTasks = () => {
   // const { tasks, userSpecificTasks } = useSelector((state) => state.tasksSlice);

@@ -1,7 +1,8 @@
 
+import { useGetSingleTaskQuery } from '../../redux/features/tasks/tasksApi';
 import Modal from '../ui/Modal';
-import { useGetSingleTaskQuery } from '../../redux/features/api/baseApi';
-import { useEffect } from 'react';
+
+
 
 const TaskDetailsModal = ({ isOpen, setIsOpen, taskId }) => {
   
