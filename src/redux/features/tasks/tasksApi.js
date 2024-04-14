@@ -9,6 +9,10 @@ const tasksApi = baseApi.injectEndpoints({
     getSingleTask: builder.query({
       query: (id) => `/task/${id}`,
     }),
+    getArchive : builder.query({
+      query : ()=> "/tasks/archive",
+      providesTags: ["Tasks"],
+    }),
     updateStatus: builder.mutation({
       query: ({ id, status }) => ({
         url: `/tasks/${id}`,
@@ -35,4 +39,4 @@ const tasksApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {useGetTasksQuery ,useGetSingleTaskQuery , useUpdateStatusMutation, useAddTaskMutation, useDeleteTaskMutation} = tasksApi
+export const {useGetTasksQuery ,useGetSingleTaskQuery , useUpdateStatusMutation, useAddTaskMutation, useDeleteTaskMutation,useGetArchiveQuery} = tasksApi
